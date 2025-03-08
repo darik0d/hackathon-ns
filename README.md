@@ -60,7 +60,9 @@ Check our [documentation](https://bugify.io/docs) for detailed installation and 
 
 Our team consists of seasoned software engineers and security professionals with decades of combined experience in code quality, security testing, and developer training.
 
-TODO Add team members here
+* Samuel Berton
+* Alperen Doganci
+* Daria Matviichuk
 
 Visit [bugify.io/team](https://bugify.io/team) to learn more about our backgrounds and expertise. We're constantly innovating based on industry feedback and evolving development practices.
 
