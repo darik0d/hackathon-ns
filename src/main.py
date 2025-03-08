@@ -8,9 +8,8 @@ import os
 import logging
 import time
 import platform
-import threading
 from introduce_bugs import introduce_bugs
-
+import random
 import click
 import pyfiglet
 from halo import Halo  # Import Halo
@@ -85,21 +84,18 @@ def cli(ctx, show_ascii, no_clear):
 def eval(ctx):
     """Evaluate the bugfixes created by the developer team"""
     ctx.logger.info(click.style("Starting evaluation of your performance", fg="yellow"))
-    
     # Create and start the spinner
     spinner = IndeterminateSpinner("Evaluating your performance in finding the bugs", spinner='dots')
-    
+
     try:
         spinner.start()
-        
         # Simulate work being done (replace with your actual implementation)
         time.sleep(5)  # Simulating longer work
-        
         # TODO: Implement your evaluation logic here
-        
+
         spinner.stop()
         click.secho("✓ Evaluation complete", fg="green")
-        
+
         # Sample output (replace with actual results)
     except Exception as e:
         spinner.stop()
@@ -111,21 +107,29 @@ def eval(ctx):
 def start(ctx):
     """Introduce bugs into the code and save the original code"""
     ctx.logger.info(click.style(f"Starting {name}", fg="magenta"))
-    
+
+    # Get the file list to inject the bugs
+
+    # Get the bug introduction level
+    bug_level = click.prompt("Enter the bug level", default=6, type=int)
+
+    # Create the file 
+    directory = click.prompt("Please enter a directory path", type=click.Path(exists=True, file_okay=False, dir_okay=True, readable=True))
+
+    file_list = []
+    for file in os.listdir(directory):
+        item_path = os.path.join(directory, file)
+        file_list.append((item_path, random.randint(0, bug_level)))
+
     # Create and start the spinner
     spinner = IndeterminateSpinner("Introducing bugs into your codebase 😈", spinner='dots')
-    
+
     try:
         spinner.start()
-        
-        # Simulate startup sequence (replace with your actual implementation)
-        time.sleep(4)  # Simulating work
-        
-        # TODO: Implement your startup logic here
-        
+        introduce_bugs(file_list)
         spinner.stop()
         click.secho(f"✓ {name} successfully introduced bugs in your code", fg="green")
-        
+
     except Exception as e:
         spinner.stop()
         ctx.logger.error(click.style(f"Startup failed: {str(e)}", fg="red"))
