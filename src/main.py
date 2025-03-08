@@ -9,6 +9,7 @@ import logging
 import time
 import platform
 import threading
+from introduce_bugs import introduce_bugs
 
 import click
 import pyfiglet
