@@ -96,7 +96,7 @@ def generate_final_summary(all_results):
 
     return summary_response.generations[0].text
 
-def main():
+def evaluate():
     file_paths = get_file_paths_from_os()
     if not file_paths:
         print("No matching files found.")
@@ -129,15 +129,13 @@ def main():
     final_summary = generate_final_summary(all_results)
 
     summary_report = f"""
-    AI Evaluation Summary:
-    ----------------------
-    - Files Evaluated: {file_count}
-    - Average Score: {avg_score:.2f}%
+    # DevProbe Evaluation Summary:
+
+    * Files Evaluated: {file_count}
+    * Average Score: {avg_score:.2f}%
     
     {final_summary}
     """
 
-    print(summary_report)
+    return summary_report
 
-if __name__ == "__main__":
-    main()

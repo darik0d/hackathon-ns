@@ -14,9 +14,11 @@ import random
 import click
 import pyfiglet
 from halo import Halo  # Import Halo
+from rich.console import Console
+from rich.markdown import Markdown
 
 
-name = "DevProbe"
+name = "Bugify"
 
 def clear_screen():
     """Clear the terminal screen based on the operating system"""
@@ -66,10 +68,8 @@ class BugHeroContext:
         if clear_terminal:
             clear_screen()
         
-        self.logger = setup_logging()
         if show_ascii:
             display_welcome()
-        self.logger.info(click.style(f"Initializing {name}", fg="green"))
 
 # Main CLI group
 @click.group()
@@ -84,7 +84,6 @@ def cli(ctx, show_ascii, no_clear):
 @click.pass_obj
 def eval(ctx):
     """Evaluate the bugfixes created by the developer team"""
-    ctx.logger.info(click.style("Starting evaluation of your performance", fg="yellow"))
     # Create and start the spinner
     spinner = IndeterminateSpinner("Evaluating your performance in finding the bugs", spinner='dots')
 
@@ -94,20 +93,26 @@ def eval(ctx):
         res = evaluate()
         spinner.stop()
         click.secho("✓ Evaluation complete", fg="green")
-        clear_screen()
-        click.secho(res)
+        #click.secho(res)
+
+        # Convert Markdown text to a Rich object
+        rich_md = Markdown(res)
+
+        # Create a Console object from Rich to print formatted Markdown
+        console = Console()
+
+        # Print the formatted Markdown to the console
+        console.print(rich_md)
 
         # Sample output (replace with actual results)
     except Exception as e:
         spinner.stop()
-        ctx.logger.error(click.style(f"Evaluation failed: {str(e)}", fg="red"))
         raise
 
 @cli.command()
 @click.pass_obj
 def start(ctx):
     """Introduce bugs into the code and save the original code"""
-    ctx.logger.info(click.style(f"Starting {name}", fg="magenta"))
 
     # Get the file list to inject the bugs
 
@@ -133,7 +138,6 @@ def start(ctx):
 
     except Exception as e:
         spinner.stop()
-        ctx.logger.error(click.style(f"Startup failed: {str(e)}", fg="red"))
         raise
 
 if __name__ == "__main__":

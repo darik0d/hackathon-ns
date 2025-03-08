@@ -1,9 +1,9 @@
-# DevProbe
+# Bugify
 
-DevProbe is a powerful developer auditing tool that strategically introduces controlled bugs into codebases to help companies evaluate their development teams and improve their quality assurance processes.
+Bugify is a powerful developer auditing tool that strategically introduces controlled bugs into codebases to help companies evaluate their development teams and improve their quality assurance processes.
 
 ## Make malicious code easier
-DevProbe specializes in generating sophisticated bugs and code vulnerabilities directly into your codebase:
+Bugify specializes in generating sophisticated bugs and code vulnerabilities directly into your codebase:
 
 Insert complex logical errors that bypass typical static analysis
 Create subtle memory leaks and resource management issues
@@ -34,13 +34,13 @@ Getting started with DevProbe is straightforward:
 git clone <repository_url>
 
 # Navigate to the repository folder
-cd DevProbe
+cd Bugify
 
 # Install dependencies
 pip install -r requirements.txt   # or python setup.py install, pipenv install, poetry install
 
 # Make the script executable (e.g., myscript.py)
-chmod +x devProbe.py
+chmod +x src/main.py
 
 # Add the directory to PATH (edit ~/.bashrc or ~/.zshrc)
 export PATH=$PATH:/path/to/your/repo
@@ -49,12 +49,12 @@ export PATH=$PATH:/path/to/your/repo
 source ~/.bashrc  # Or source ~/.zshrc for Zsh users
 
 # Run the script from anywhere
-devProbe
+bugify
 ```
 
 DevProbe supports multiple languages and frameworks including JavaScript, Python, Java, Ruby, and more. 
 
-Check our [documentation](https://devprobe.io/docs) for detailed installation and configuration instructions.
+Check our [documentation](https://bugify.io/docs) for detailed installation and configuration instructions.
 
 ## You are a genius - where can I find more information about the team?
 
@@ -62,7 +62,7 @@ Our team consists of seasoned software engineers and security professionals with
 
 TODO Add team members here
 
-Visit [devprobe.io/team](https://devprobe.io/team) to learn more about our backgrounds and expertise. We're constantly innovating based on industry feedback and evolving development practices.
+Visit [bugify.io/team](https://bugify.io/team) to learn more about our backgrounds and expertise. We're constantly innovating based on industry feedback and evolving development practices.
 
 ---
 
