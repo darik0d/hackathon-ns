@@ -48,7 +48,7 @@ def evaluate_with_cohere(original_code, bugged_code, fixed_code, bug_report, fix
         model="command-r-plus",
         prompt=analyze_bugs_prompt,
         max_tokens=300,
-        temperature=0.7
+        temperature=0.2
     )
 
     # Step 2: Evaluate the developer's fixes and explain what was fixed
@@ -69,7 +69,7 @@ def evaluate_with_cohere(original_code, bugged_code, fixed_code, bug_report, fix
         model="command-r-plus",
         prompt=evaluate_fixes_prompt,
         max_tokens=300,
-        temperature=0.7
+        temperature=0.3
     )
 
     # Step 3: Check if any bugs were missed and assess the quality of the fix
@@ -92,7 +92,7 @@ def evaluate_with_cohere(original_code, bugged_code, fixed_code, bug_report, fix
         model="command-r-plus",
         prompt=check_missed_bugs_prompt,
         max_tokens=300,
-        temperature=0.7
+        temperature=0.3
     )
 
     # Step 4: Provide a score and qualitative feedback based on the evaluation
@@ -167,7 +167,7 @@ def get_file_paths_from_os():
 
     return file_paths
 
-def main():
+def evaluate():
     # Get the file paths dynamically from the folders
     file_paths = get_file_paths_from_os()
 
@@ -176,6 +176,7 @@ def main():
         return
 
     # Process each set of files (original, bugged, fixed)
+    eval_results = []
     for original_file_path, bugged_file_path, fixed_file_path in file_paths:
         # Load the files
         original_code = load_file(original_file_path)
@@ -187,11 +188,9 @@ def main():
         fix_report = generate_diff(bugged_code, fixed_code)
 
         # Evaluate with Cohere AI
-        evaluation_result = evaluate_with_cohere(original_code, bugged_code, fixed_code, bug_report, fix_report)
+        eval_results.append(evaluate_with_cohere(original_code, bugged_code, fixed_code, bug_report, fix_report))
 
-        # Print the evaluation result
-        print(f"Evaluation Result for {original_file_path}:")
-        print(evaluation_result)
+    # Put the entire result into a single report for all the files
+    results = "put the results here"
 
-if __name__ == "__main__":
-    main()
+    return results

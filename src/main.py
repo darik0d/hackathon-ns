@@ -9,6 +9,7 @@ import logging
 import time
 import platform
 from introduce_bugs import introduce_bugs
+from evaluation import evaluate
 import random
 import click
 import pyfiglet
@@ -90,11 +91,11 @@ def eval(ctx):
     try:
         spinner.start()
         # Simulate work being done (replace with your actual implementation)
-        time.sleep(5)  # Simulating longer work
-        # TODO: Implement your evaluation logic here
-
+        res = evaluate()
         spinner.stop()
         click.secho("✓ Evaluation complete", fg="green")
+        clear_screen()
+        click.secho(res)
 
         # Sample output (replace with actual results)
     except Exception as e:
