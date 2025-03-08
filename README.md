@@ -2,6 +2,8 @@
 
 Bugify is a powerful developer auditing tool that strategically introduces controlled bugs into codebases to help companies evaluate their development teams and improve their quality assurance processes.
 
+Check out our video: https://youtu.be/xrtWyPhH30s?si=Jf7_IbmXW9oNcGTJ
+
 ## Make malicious code easier
 Bugify specializes in generating sophisticated bugs and code vulnerabilities directly into your codebase:
 
@@ -24,6 +26,8 @@ It may seem counterintuitive to intentionally add bugs to your codebase, but Dev
 5. **Security Hardening**: Test your team's ability to identify potential security issues before they become real problems.
 
 All bugs introduced by DevProbe are fully tracked, documented, and can be automatically removed if needed - no permanent damage to your codebase.
+
+Check it out on Github: https://github.com/darik0d/hackathon-ns
 
 ## Ok, sounds useful - how do I get started?
 
