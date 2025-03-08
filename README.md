@@ -30,7 +30,26 @@ All bugs introduced by DevProbe are fully tracked, documented, and can be automa
 Getting started with DevProbe is straightforward:
 
 ```bash
-TODO
+# Clone the repository
+git clone <repository_url>
+
+# Navigate to the repository folder
+cd DevProbe
+
+# Install dependencies
+pip install -r requirements.txt   # or python setup.py install, pipenv install, poetry install
+
+# Make the script executable (e.g., myscript.py)
+chmod +x devProbe.py
+
+# Add the directory to PATH (edit ~/.bashrc or ~/.zshrc)
+export PATH=$PATH:/path/to/your/repo
+
+# Refresh the terminal session
+source ~/.bashrc  # Or source ~/.zshrc for Zsh users
+
+# Run the script from anywhere
+devProbe
 ```
 
 DevProbe supports multiple languages and frameworks including JavaScript, Python, Java, Ruby, and more. 
