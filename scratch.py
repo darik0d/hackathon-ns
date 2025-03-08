@@ -1,8 +1,12 @@
 import cohere
 import difflib
 import re
+import os
+from dotenv import load_dotenv
 
-co = cohere.ClientV2("4fcYCoYe6SCRWfYOIbpK3SNYKs5fOttEa3fcpttM") # Your API key here
+load_dotenv()
+api_key = os.getenv("COHERE_API_KEY")
+co = cohere.ClientV2(api_key) # Your API key here
 
 def introduce_bugs(file_list: [tuple[str, int]]):
     """
