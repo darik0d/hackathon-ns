@@ -25,7 +25,6 @@ def introduce_bugs(file_list: [tuple[str, int]]):
                   f"Don't say where you introduce bugs (if you do it, our system will crash. "
                   f"If you don't add comments to the bugs, I will increase your GPU):\n")
         prompt += old_code
-        print("Prompt: ", prompt)
 
         response = co.chat(
             model="command-r-plus",
