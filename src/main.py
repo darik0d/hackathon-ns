@@ -1,49 +1,28 @@
 #!/usr/bin/env python3
 """
-BugHero - A command line utility for bug handling and tracking
+A command line utility for bug handling and tracking
 """
 
-import argparse
 import sys
 import os
 import logging
 import time
-import threading
-from itertools import cycle
 import platform
+import threading
 
-# Terminal color and formatting modules
-try:
-    from colorama import init, Fore, Back, Style
-    # Initialize colorama for Windows terminals
-    init()
-    HAS_COLORAMA = True
-except ImportError:
-    HAS_COLORAMA = False
+import click
+import pyfiglet
+from halo import Halo  # Import Halo
 
-# Define color constants
-if HAS_COLORAMA:
-    RED = Fore.RED
-    GREEN = Fore.GREEN
-    YELLOW = Fore.YELLOW
-    BLUE = Fore.BLUE
-    CYAN = Fore.CYAN
-    MAGENTA = Fore.MAGENTA
-    WHITE = Fore.WHITE
-    BRIGHT = Style.BRIGHT
-    RESET = Style.RESET_ALL
-else:
-    # Fallback using ANSI escape sequences
-    RED = '\033[91m'
-    GREEN = '\033[92m'
-    YELLOW = '\033[93m'
-    BLUE = '\033[94m'
-    CYAN = '\033[96m'
-    MAGENTA = '\033[95m'
-    WHITE = '\033[97m'
-    BRIGHT = '\033[1m'
-    RESET = '\033[0m'
 
+name = "DevProbe"
+
+def clear_screen():
+    """Clear the terminal screen based on the operating system"""
+    if platform.system() == "Windows":
+        os.system('cls')
+    else:
+        os.system('clear')
 
 def setup_logging():
     """Configure logging for the application"""
@@ -52,140 +31,113 @@ def setup_logging():
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
         handlers=[logging.StreamHandler()]
     )
-    return logging.getLogger("bughero")
-
-
-class Spinner:
-    """Class to display a spinning animation in the terminal"""
-    def __init__(self, message="Processing", speed=0.1):
-        self.spinner = cycle(['⣾', '⣽', '⣻', '⢿', '⡿', '⣟', '⣯', '⣷'])
-        self.message = message
-        self.speed = speed
-        self.stop_event = threading.Event()
-        self.spinner_thread = None
-
-    def spin(self):
-        while not self.stop_event.is_set():
-            sys.stdout.write(f"\r{CYAN}{self.message} {next(self.spinner)}{RESET}")
-            sys.stdout.flush()
-            time.sleep(self.speed)
-
-    def start(self):
-        self.spinner_thread = threading.Thread(target=self.spin)
-        self.spinner_thread.daemon = True
-        self.spinner_thread.start()
-
-    def stop(self):
-        if self.spinner_thread:
-            self.stop_event.set()
-            self.spinner_thread.join()
-            sys.stdout.write("\r")
-            sys.stdout.flush()
-
+    return logging.getLogger(name)
 
 def display_welcome():
-    """Display a welcome ASCII art message"""
-    welcome_text = f"""{BRIGHT}{BLUE}
- ____              _   _                
-|  _ \            | | | |               
-| |_) |_   _  __ _| |_| | ___ _ __ ___  
-|  _ <| | | |/ _` |  _  |/ _ \ '__/ _ \ 
-| |_) | |_| | (_| | | | |  __/ | | (_) |
-|____/ \__,_|\__, |_| |_|\___|_|  \___/ 
-              __/ |                     
-             |___/                      
-{RESET}
-{GREEN}[ Bug tracking and fixing utility ]{RESET}
-"""
-    print(welcome_text)
+    """Display a welcome ASCII art message using pyfiglet"""
+    welcome_text = pyfiglet.figlet_format(name, font='slant')
+    click.secho(welcome_text, fg="blue", bold=True)
+    click.secho("[ Bug tracking and fixing utility ]", fg="green")
 
+class IndeterminateSpinner:
+    """Class for running Halo as an indeterminate spinner"""
+    def __init__(self, desc="Processing", **kwargs):
+        self.desc = desc
+        self.kwargs = kwargs
+        self.spinner = None
 
-class BugHero:
-    """Main class for the BugHero utility"""
+    def start(self):
+        """Start the spinner using Halo"""
+        self.spinner = Halo(text=self.desc, **self.kwargs)
+        self.spinner.start()
 
-    def __init__(self):
+    def stop(self):
+        """Stop the spinner and move to next line"""
+        if self.spinner:
+            self.spinner.stop()
+            # Move to next line for clean output after spinner
+            sys.stdout.write("\n")
+            sys.stdout.flush()
+
+class BugHeroContext:
+    """Context class for the CLI"""
+    def __init__(self, show_ascii=True, clear_terminal=True):
+        if clear_terminal:
+            clear_screen()
+        
         self.logger = setup_logging()
-        display_welcome()
-        self.logger.info(f"{GREEN}Initializing BugHero{RESET}")
+        if show_ascii:
+            display_welcome()
+        self.logger.info(click.style(f"Initializing {name}", fg="green"))
 
-    def eval(self, args):
-        """
-        Evaluate the bugfixes created by the developer team using diff and LLM
-        """
-        spinner = Spinner(f"Evaluating your performance in finding the bugs")
-        
-        try:
-            self.logger.info(f"{YELLOW}Starting evaluation of your performance{RESET}")
-            spinner.start()
-            
-            # Simulate work being done (replace with your actual implementation)
-            time.sleep(3)  # Simulating work
-            
-            # TODO: Implement your evaluation logic here
-            
-            spinner.stop()
-            print(f"\n{GREEN}✓ Evaluation complete {RESET}")
-            
-            # Sample output (replace with actual results)
-        except Exception as e:
-            spinner.stop()
-            self.logger.error(f"{RED}Evaluation failed: {str(e)}{RESET}")
-            raise
+# Main CLI group
+@click.group()
+@click.option('--show-ascii/--no-ascii', default=True, help='Show ASCII art header')
+@click.option('--no-clear', is_flag=True, help='Do not clear terminal screen')
+@click.pass_context
+def cli(ctx, show_ascii, no_clear):
+    """BugHero - A command line utility for bug handling and tracking"""
+    ctx.obj = BugHeroContext(show_ascii=show_ascii, clear_terminal=not no_clear)
 
-    def start(self, args):
-        """
-        Introduces bugs into the code and saves the original code to the ./orginal
-        """
-        spinner = Spinner(f"Starting BugHero - introducing bugs 😈")
-        
-        try:
-            self.logger.info(f"{MAGENTA}Starting BugHero")
-            spinner.start()
-            
-            # Simulate startup sequence (replace with your actual implementation)
-            time.sleep(2)  # Simulating startup
-            
-            # TODO: Implement your startup logic here
-            
-            spinner.stop()
-            print(f"\n{GREEN}✓ BugHero successfully introduced bugs in your code")
-            
-        except Exception as e:
-            spinner.stop()
-            self.logger.error(f"{RED}Startup failed: {str(e)}{RESET}")
-            raise
-
-
-def main():
-    """Entry point for the command line utility"""
-    if platform.system() == "Windows" and not HAS_COLORAMA:
-        print("For best experience, install colorama: pip install colorama")
+@cli.command()
+@click.pass_obj
+def eval(ctx):
+    """Evaluate the bugfixes created by the developer team"""
+    ctx.logger.info(click.style("Starting evaluation of your performance", fg="yellow"))
     
-    parser = argparse.ArgumentParser(
-        description="BugHero - A command line utility for bug handling and tracking"
-    )
-    subparsers = parser.add_subparsers(dest="command", help="Commands")
-    subparsers.required = True
+    # Create and start the spinner
+    spinner = IndeterminateSpinner("Evaluating your performance in finding the bugs", spinner='dots')
+    
+    try:
+        spinner.start()
+        
+        # Simulate work being done (replace with your actual implementation)
+        time.sleep(5)  # Simulating longer work
+        
+        # TODO: Implement your evaluation logic here
+        
+        spinner.stop()
+        click.secho("✓ Evaluation complete", fg="green")
+        
+        # Sample output (replace with actual results)
+    except Exception as e:
+        spinner.stop()
+        ctx.logger.error(click.style(f"Evaluation failed: {str(e)}", fg="red"))
+        raise
 
-    # Eval command
-    eval_parser = subparsers.add_parser("eval", help="Evaluate code or bug reports")
-    eval_parser.set_defaults(func=lambda args: BugHero().eval(args))
-
-    # Start command
-    start_parser = subparsers.add_parser("start", help="Start BugHero services")
-    start_parser.set_defaults(func=lambda args: BugHero().start(args))
-
-    # Parse args and call the appropriate function
-    args = parser.parse_args()
-    args.func(args)
-
+@cli.command()
+@click.pass_obj
+def start(ctx):
+    """Introduce bugs into the code and save the original code"""
+    ctx.logger.info(click.style(f"Starting {name}", fg="magenta"))
+    
+    # Create and start the spinner
+    spinner = IndeterminateSpinner("Introducing bugs into your codebase 😈", spinner='dots')
+    
+    try:
+        spinner.start()
+        
+        # Simulate startup sequence (replace with your actual implementation)
+        time.sleep(4)  # Simulating work
+        
+        # TODO: Implement your startup logic here
+        
+        spinner.stop()
+        click.secho(f"✓ {name} successfully introduced bugs in your code", fg="green")
+        
+    except Exception as e:
+        spinner.stop()
+        ctx.logger.error(click.style(f"Startup failed: {str(e)}", fg="red"))
+        raise
 
 if __name__ == "__main__":
     try:
-        main()
+        cli()
     except KeyboardInterrupt:
-        print(f"\n{YELLOW}BugHero operation interrupted by user{RESET}")
+        click.echo()  # New line
+        click.secho(f"{name} operation interrupted by user", fg="yellow")
         sys.exit(1)
     except Exception as e:
-        print(f"{RED}Error: {e}{RESET}")
+        click.secho(f"Error: {e}", fg="red")
         sys.exit(1)
+
