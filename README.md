@@ -31,7 +31,7 @@ Check it out on Github: https://github.com/darik0d/hackathon-ns
 
 ## Ok, sounds useful - how do I get started?
 
-Getting started with DevProbe is straightforward:
+Getting started with Bugify is straightforward:
 
 ```bash
 # Clone the repository
