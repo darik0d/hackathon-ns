@@ -25,7 +25,7 @@ It may seem counterintuitive to intentionally add bugs to your codebase, but Dev
 4. **Metrics Gathering**: Gather concrete data about bug detection rates, resolution times, and process effectiveness.
 5. **Security Hardening**: Test your team's ability to identify potential security issues before they become real problems.
 
-All bugs introduced by DevProbe are fully tracked, documented, and can be automatically removed if needed - no permanent damage to your codebase.
+All bugs introduced by Bugify are fully tracked, documented, and can be automatically removed if needed - no permanent damage to your codebase.
 
 Check it out on Github: https://github.com/darik0d/hackathon-ns
 
@@ -56,9 +56,9 @@ source ~/.bashrc  # Or source ~/.zshrc for Zsh users
 bugify
 ```
 
-DevProbe supports multiple languages and frameworks including JavaScript, Python, Java, Ruby, and more. 
+Bugify supports multiple languages and frameworks including JavaScript, Python, Java, Ruby, and more. 
 
-Check our [documentation](https://bugify.io/docs) for detailed installation and configuration instructions.
+Soon we will make a documentation for the project.
 
 ## You are a genius - where can I find more information about the team?
 
@@ -68,8 +68,6 @@ Our team consists of seasoned software engineers and security professionals with
 * Alperen Doganci
 * Daria Matviichuk
 
-Visit [bugify.io/team](https://bugify.io/team) to learn more about our backgrounds and expertise. We're constantly innovating based on industry feedback and evolving development practices.
-
 ---
 
-*DevProbe: Strengthening your team through strategic challenges*
+*Bugify: Why introduce bugs occasionally when you can do it on purpose?*
